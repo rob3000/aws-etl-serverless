@@ -1,5 +1,6 @@
 import { SSTConfig } from "sst";
 import { ETLStack } from './stacks/etl';
+import { APIStack } from "./stacks/api";
 
 export default {
   config(_input) {
@@ -12,6 +13,9 @@ export default {
     app.setDefaultFunctionProps({
       runtime: "go1.x",
     });
-    app.stack(ETLStack);
+
+    app
+    .stack(ETLStack)
+    .stack(APIStack)
   },
 } satisfies SSTConfig;

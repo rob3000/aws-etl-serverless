@@ -2,26 +2,33 @@ package main
 
 import (
 	"encoding/json"
+
+	"github.com/rob3000/aws-etl-serverless/db"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/serverless-stack/examples/rest-api-go/db"
 )
 
 func Handler(request events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
-	var notes = db.Notes()
-	var note = notes[request.PathParameters["id"]]
+	var filters = db.FilterOptions()
 
-	if note == nil {
+	if filters == nil {
 		return events.APIGatewayProxyResponse{
-			Body:       `{"error":true}`,
+			Body: `{"error":true}`,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
 			StatusCode: 404,
 		}, nil
 	}
 
-	response, _ := json.Marshal(note)
+	response, _ := json.Marshal(filters)
 
 	return events.APIGatewayProxyResponse{
-		Body:       string(response),
+		Body: string(response),
+		Headers: map[string]string{
+			"Content-Type": "application/json",
+		},
 		StatusCode: 200,
 	}, nil
 }

@@ -322,4 +322,9 @@ export function ETLStack({ stack }: StackContext) {
       `arn:aws:athena:${iamAccount}:workgroup/*`
     ],
   }))
+
+  return {
+    rawBucket,
+    cleanBucket,
+  }
 }
